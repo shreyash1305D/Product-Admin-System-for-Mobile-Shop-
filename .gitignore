@@ -1,0 +1,21 @@
+# Ignore compiled classes and build artifacts
+/target/
+
+# Ignore IntelliJ or JetBrains project files (optional)
+/.idea/
+/*.iml
+/shelf/
+/workspace.xml
+
+# Optional: Ignore logs and temporary files
+*.log
+*.tmp
+
+# Ignore local configuration
+*.env
+*.properties
+
+# You can keep this if you don’t want to track your local application.properties
+# If you need a version-controlled template, you can use: application.properties.example
+
+/src/main/resources/application.properties

@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+<title>Product List</title>
+<link rel="stylesheet" href="/css/styles.css">
+<link rel="stylesheet"
+	href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css">
+<link rel="stylesheet"
+	href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.5/font/bootstrap-icons.css">
+</head>
+<body class="bg-light">
+	<div class="container mt-5">
+		<div class="card shadow-lg">
+			<div class="card-header bg-success text-white">
+				<h4>
+					<i class="bi bi-box-seam-fill me-2"></i>Product Inventory
+				</h4>
+			</div>
+			<!-- Search by Brand/Model -->
+<form th:action="@{/products/search}" method="get" class="d-flex mb-3">
+	<input type="text" name="keyword" class="form-control me-2"
+		placeholder="Search by brand or model name">
+	<button type="submit" class="btn btn-outline-success">
+		<i class="bi bi-search"></i> Search
+	</button>
+</form>
+
+<!-- Filter by Price Range and Brand -->
+<form th:action="@{/products/filter}" method="get" class="row g-2 mb-4">
+	<div class="col">
+		<input type="number" name="minPrice" class="form-control"
+			placeholder="Min Price">
+	</div>
+	<div class="col">
+		<input type="number" name="maxPrice" class="form-control"
+			placeholder="Max Price">
+	</div>
+	<div class="col">
+		<select name="brand" class="form-select">
+			<option value="">All Brands</option>
+			<option th:each="b : ${brands}" th:value="${b}" th:text="${b}"></option>
+		</select>
+	</div>
+	<div class="col">
+		<button type="submit" class="btn btn-outline-primary">
+			<i class="bi bi-funnel-fill"></i> Filter
+		</button>
+	</div>
+</form>
+			<div class="card-body">
+				<table class="table table-hover table-bordered mt-3">
+					<thead class="table-light">
+						<tr>
+							<th><i class="bi bi-phone-fill me-1"></i>Model Name</th>
+							<th><i class="bi bi-tags-fill me-1"></i>Brand</th>
+							<th><i class="bi bi-currency-rupee me-1"></i>Price</th>
+							<th><i class="bi bi-boxes me-1"></i>Stock</th>
+							<th><i class="bi bi-tools me-1"></i>Actions</th>
+						</tr>
+					</thead>
+					<tbody>
+						<tr th:each="product : ${products}">
+							<td th:text="${product.modelName}"></td>
+							<td th:text="${product.brand}"></td>
+							<td th:text="${product.price}"></td>
+							<td th:text="${product.stockQuantity}"></td>
+							<td><a
+								th:href="@{/products/edit/{id}(id=${product.prodid})}"
+								class="btn btn-sm btn-warning"> <i
+									class="bi bi-pencil-square"></i> Edit
+							</a> <a th:href="@{/products/delete/{id}(id=${product.prodid})}"
+								class="btn btn-sm btn-danger"
+								onclick="return confirm('Are you sure you want to delete this product?')">
+									<i class="bi bi-trash-fill"></i> Delete
+							</a></td>
+						</tr>
+					</tbody>
+				</table>
+
+				<div class="mt-4">
+					<h5>
+						<i class="bi bi-exclamation-triangle-fill text-danger me-2"></i>Low
+						Stock Products (less than 5 units)
+					</h5>
+					<ul class="list-group">
+						<li class="list-group-item list-group-item-warning"
+							th:each="p : ${lowStock}"
+							th:text="${p.modelName + ' (' + p.stockQuantity + ')'}"></li>
+					</ul>
+				</div>
+
+				<div class="mt-4 d-flex justify-content-between">
+					<a href="/dashboard" class="btn btn-outline-secondary"> <i
+						class="bi bi-house-door-fill me-1"></i>Back to Home
+					</a> <a href="/products/add" class="btn btn-outline-primary"> <i
+						class="bi bi-plus-circle-fill me-1"></i>Add New Product
+					</a>
+				</div>
+			</div>
+		</div>
+	</div>
+</body>
+</html>
